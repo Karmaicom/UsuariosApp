@@ -1,20 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UsuariosApp.Infra.Data.Mappings;
 
 namespace UsuariosApp.Infra.Data.Contexts
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //adicionar o caminho da connecionstring do banco de dados
+            optionsBuilder.UseSqlServer("Data Source=localhost,1435;Initial Catalog=master;User ID=sa;Password=Coti@2025;Encrypt=False");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //adicionar cada classe de mapeamento de entidade do projeto
+            modelBuilder.ApplyConfiguration(new PerfilMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
+
     }
 }
